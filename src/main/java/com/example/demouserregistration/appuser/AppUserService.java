@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,8 +31,9 @@ public class AppUserService implements UserDetailsService {
   }
 
   public String signUpUser(AppUser appUser) {
-    boolean userExists = appUserRepository.findByEmail(appUser.getEmail()).isPresent();
-    if (userExists) {
+    Optional<AppUser> optionalAppUser = appUserRepository.findByEmail(appUser.getEmail());
+
+    if (optionalAppUser.isPresent() && optionalAppUser.get().getEnabled()) {
       throw new IllegalStateException(String.format(EMAIL_ALREADY_TAKEN_MSG, appUser.getEmail()));
     }
 

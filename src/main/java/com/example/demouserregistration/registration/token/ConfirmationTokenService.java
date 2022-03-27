@@ -20,6 +20,8 @@ public class ConfirmationTokenService {
     return confirmationTokenRepository.findByToken(token);
   }
 
+  public Optional<ConfirmationToken> getToken(Long appUserId) {return confirmationTokenRepository.findByAppUserId(appUserId);}
+
   public int setConfirmedAt(String token) {
     return confirmationTokenRepository.updateConfirmedAt(
             token, LocalDateTime.now());
